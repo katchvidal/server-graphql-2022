@@ -3,12 +3,12 @@ import express from "express";
 import compression from "compression";
 import cors from "cors";
 import enviroments from "./configs/enviroments";
-// import schema from "./schema";
+import schema from './schemas'
 import chalk from "chalk";
 
 //  TODO: CHECK ENVIROMENT 
 if (process.env.NODE_ENV !== "production") {
-  const env = enviroments;
+  const env = enviroments;  
 }
 
 //  TODO: Main function start config of the server
@@ -19,7 +19,7 @@ async function main() {
   app.use(compression());
 
   const apolloServer = new ApolloServer({
-    //schema,
+    schema,
     introspection: true,
   });
   await apolloServer.start();
