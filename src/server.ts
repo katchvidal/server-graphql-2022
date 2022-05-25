@@ -5,6 +5,8 @@ import cors from "cors";
 import enviroments from "./configs/enviroments";
 import schema from './schemas'
 import chalk from "chalk";
+import { IContextServer } from "./interfaces/context/server.context";
+import { connectToDatabase } from "./lib/database.config";
 
 //  TODO: CHECK ENVIROMENT 
 if (process.env.NODE_ENV !== "production") {
@@ -18,10 +20,20 @@ async function main() {
   app.use(cors());
   app.use(compression());
 
+  const db = await connectToDatabase()
+
+  const context = async ({ req, connection }: IContextServer) => {
+    const token = (req) ? req.headers.authorization : connection.authorization
+
+    return { db, token };
+  };
+
   const apolloServer = new ApolloServer({
     schema,
     introspection: true,
+    context
   });
+  
   await apolloServer.start();
   apolloServer.applyMiddleware({ app });
 

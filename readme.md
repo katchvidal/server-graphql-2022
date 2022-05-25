@@ -39,6 +39,4 @@
     -   Configuraciones iniciales variables de ambiente y enviroments desarrollo y Produccion
     1.  CONFIGURACIONES
         -   enviroments.ts
-        
-
 ```

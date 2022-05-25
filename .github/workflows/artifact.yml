@@ -1,0 +1,43 @@
+
+
+name: Release Artifacts
+on:
+  push:
+    branches: [ main ]
+
+env:
+  TAG_NAME: ${{ github.event.inputs.TAG_NAME || github.event.release.tag_name }}
+permissions:
+  contents: write
+
+jobs:
+  update_tag:
+    name: Update the major tag to include the ${{ github.event.inputs.TAG_NAME || github.event.release.tag_name }} changes
+    environment:
+      name: releaseNewActionVersion
+    runs-on: ubuntu-latest
+    steps:
+    - name: Update the ${{ env.TAG_NAME }} tag
+      id: update-major-tag
+      uses: actions/publish-action@v0.1.0
+      with:
+        source-tag: ${{ env.TAG_NAME }}
+
+
+
+  # - name: build
+  #   run: make build
+  # - name: version
+  #   run: echo "::set-output name=version::$(./bin/azblogfilter --version)"
+  #   id: version
+  # - name: release
+  #   uses: actions/create-release@v1
+  #   id: create_release
+  #   with:
+  #     draft: false
+  #     prerelease: false
+  #     release_name: ${{ steps.version.outputs.version }}
+  #     tag_name: ${{ github.ref }}
+  #     body_path: CHANGELOG.md
+  #   env:
+  #     GITHUB_TOKEN: ${{ github.token }}

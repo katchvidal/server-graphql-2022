@@ -1,0 +1,8 @@
+#   Pagination query always recived a page: Int & itemsPage: Int
+
+type Query {
+
+    users( page: Int = 1, itemsPage: Int = 20 ): ResultUsers
+    usersActive( page: Int = 1, itemsPage: Int = 20 ): ResultUsers
+
+}

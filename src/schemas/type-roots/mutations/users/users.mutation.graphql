@@ -1,0 +1,6 @@
+# Mutation relacionados al modelo Usuario
+
+type Mutation {
+
+    SignUp( user: UserInput! ): ResultSignUpUser
+}
