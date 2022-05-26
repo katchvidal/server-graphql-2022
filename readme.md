@@ -1,4 +1,6 @@
 #   Backend GraphQL - NodeJS - Typescript - Apollo - Express
+
+![flujo de trabajo de ejemplo](https://github.com/katchvidal/server-graphql-2022/actions/workflows/artifact.yml/badge.svg)
 ```
     1.  Comenzamos el backend server ( 2022 ) Lo mas robusto posible
     2.  Tecnologias a Usar:
