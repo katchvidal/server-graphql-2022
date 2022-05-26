@@ -5,15 +5,19 @@ import UserService from "../../../services/users/users.service";
 
 const resolverUserQuery: IResolvers = {
   Query: {
-    users(root, args, context ){
+    users(root, { page, itemsPage }, context ){
         console.log( chalk.cyan( 'Backend Response: Get All Users' ))
-        return new UserService(root, args, context).items() 
+        return new UserService(root, { pagination: { page, itemsPage } }, context).items() 
     },
 
     usersActive(root, args, context ){
         console.log( chalk.cyan( 'Backend Response: Get All Users Active:True' ))
         return new UserService(root, args, context).itemsActive() 
-    }
+    },
+    user(root, args, context ){
+        console.log( chalk.cyan( 'Backend Response: Detail One User ' ))
+        return new UserService(root, args, context).detailsByEmail() 
+    },
   },
 };
 

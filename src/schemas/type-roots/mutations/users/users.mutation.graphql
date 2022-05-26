@@ -3,4 +3,7 @@
 type Mutation {
 
     SignUp( user: UserInput! ): ResultSignUpUser
+    UpdateUser( user: UserInput! ): ResultSignUpUser
+    
+    
 }

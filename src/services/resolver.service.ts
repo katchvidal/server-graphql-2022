@@ -112,24 +112,24 @@ class ResolverOperationService {
   }
 
   //  TODO: Obtener detalles del Item -> Un solo Elemento
-//   protected async get(collection: string, element: string) {
+  protected async getByEmail(collection: string, element: string) {
 
-//     try {
-//       return {
-//         status: true,
-//         message: `Backend: Response: ${element} ${this.args.id} Seleccionado -> Informacion a Continuacion`,
-//         item: await findOneElement(this.getDB(), collection, {
-//           id: this.args.id,
-//         }),
-//       };
-//     } catch (error) {
-//       return {
-//         status: false,
-//         message: `Backend: Response: No se pudo realizar la operacion anterior en la busqueda del ${element} ${this.args.id}`,
-//         item: null,
-//       };
-//     }
-//   }
+    try {
+      return {
+        status: true,
+        message: `Backend Response: ${element} ${this.args.email } -> Next Information`,
+        item: await findOneElement(this.getDB(), collection, {
+          email: this.args.email
+        }),
+      };
+    } catch (error) {
+      return {
+        status: false,
+        message: `Backend Response: No se pudo realizar la operacion anterior en la busqueda del ${element} ${this.args.email}`,
+        item: null,
+      };
+    }
+  }
 
   //  TODO: Obtener detalle del Item -> Un solo elemento by MongoID
 //   protected async getbyMongoID(collection: string, element: string) {
@@ -194,21 +194,21 @@ class ResolverOperationService {
         if (res) {
           return {
             status: true,
-            message: `Backend: Response: El ${item} Se ha Actualizado Correctamente `,
+            message: `Backend Response: El ${item} Se ha Actualizado Correctamente `,
             item: Object.assign({}, filter, objectUpdate),
           };
         }
 
         return {
           status: false,
-          message: `Backend: Response: El ${item} No se Ha Podido Actualizar Error Inesperado Intentelo de nuevo`,
+          message: `Backend Response: El ${item} No se Ha Podido Actualizar Error Inesperado Intentelo de nuevo`,
           item: null,
         };
       });
     } catch (error) {
       return {
         status: false,
-        message: `Backend: Response: El ${item} No se Ha Podido Actualizar Error Inesperado`,
+        message: `Backend Response: El ${item} No se Ha Podido Actualizar Error Inesperado`,
         item: null,
       };
     }

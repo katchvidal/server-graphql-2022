@@ -33,10 +33,9 @@
                 "dev": "nodemon \"src/server.ts\" --exec \"ts-node\" \"src/server.ts\" -e ts,graphql,json"
             },
 ```
-
 ##  Configuraciones Iniciales
 ```
     -   Configuraciones iniciales variables de ambiente y enviroments desarrollo y Produccion
-    1.  CONFIGURACIONES
+    -   Configuraciones
         -   enviroments.ts
 ```

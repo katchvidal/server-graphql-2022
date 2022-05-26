@@ -27,7 +27,7 @@ class UserService extends ResolverOperationService {
     //  TODO: COLLECCION USED IN THIS FILE ( USER )
     private collection = COLLECTIONS.USERS;
     private argumentos = this.getArgs();
-    
+
 
     constructor(root: object, args: IArgumentos, context: IContextData) {
         super(root, args, context);
@@ -49,7 +49,7 @@ class UserService extends ResolverOperationService {
     async register() {
         const user = this.argumentos.user
         //  TODO:-> EMAIL IS ALREADY EXIST?
-        const UserExist = await this.ExistInDatabasebyEmail(String( user!.email ));
+        const UserExist = await this.ExistInDatabasebyEmail(String(user!.email));
         if (UserExist) {
             return {
                 status: false,
@@ -111,40 +111,108 @@ class UserService extends ResolverOperationService {
         };
     }
 
-    // //    ->  Permite obtener un solo Usuario
-    // async details() {
-    //     /**
-    //      * Validaciones
-    //      * 0. Extraer el ID del Input Argumento
-    //      * 1. Que no venga vacio el ID
-    //      * 1.1  Convertir el ID en ObjectID de Mongo
-    //      * 2. Exista en base de datos
-    //      * 
-    //      */
-    //     const { id } = this.getArgs()
-    //     if (!this.checkData(String(id))) {
-    //         return {
-    //             status: false,
-    //             message: `Backend Response: El ID Viene Vacio o Undefined `,
-    //             user: [],
-    //         };
-    //     }
-    //     const MongoID = new ObjectId(id)
-    //     const UserExist = await this.ExistInDatabase(MongoID);
-    //     if (!UserExist) {
-    //         return {
-    //             status: false,
-    //             message: `Backend Response: El ID: ${id} No Existe `,
-    //             user: [],
-    //         };
-    //     }
-    //     const result = await this.getbyMongoID(this.collection, "User");
-    //     return {
-    //         status: result.status,
-    //         message: result.message,
-    //         user: result.item,
-    //     };
-    // }
+    //    TODO:->  Permite obtener un solo Usuario by Email
+    async detailsByEmail() {
+
+        const email = this.argumentos.email
+        if (!this.checkData(String(email))) {
+            return {
+                status: false,
+                message: `Backend Response: El Email Viene Vacio o Undefined `,
+                user: [],
+            };
+        }
+
+        const UserExist = await this.ExistInDatabasebyEmail(email);
+        if (!UserExist) {
+            return {
+                status: false,
+                message: `Backend Response: El Email: ${email} No Existe `,
+                user: [],
+            };
+        }
+        const result = await this.getByEmail(this.collection, "User");
+        return {
+            status: result.status,
+            message: result.message,
+            user: result.item,
+        };
+    }
+
+    //    TODO:->  Permite Modificar al Usuario[Sus Propiedades]
+    async modify() {
+        const user = this.argumentos.user;
+
+        const checkString = await this.checkData(String( user!.email ))
+        if(!checkString){
+            return {
+                status: false,
+                message: `El Field Email del Usuario Viene Vacio / undefine`,
+                user: null,
+            };
+        }
+        //  Comprobar email -> No venga Vacio / Undefine
+        //const search = await findOneElement(this.getDB(), this.collection, { email: user!.email });
+        const UserDataBase = await this.ExistInDatabasebyEmail( user!.email )
+        if (!UserDataBase) {
+            return {
+                status: false,
+                message: `User Not Exist `,
+                user: null,
+            };
+        }
+
+        //  Quiere Actualizar la Contraseña -> Si viene Haga la siguiente Logica Si no que continue
+        if (user?.password) {
+            user!.password = bcrypt.hashSync(String(user?.password), 11);
+            let ObjectUser = {
+                name: user.name,
+                lastname: user.lastname,
+                password: user.password,
+                email: user.email,
+                role: user.role,
+                createAT: UserDataBase.createAT,
+                birthDay: UserDataBase.birthDay
+            }
+            const result = await this.update(
+                this.collection,
+                { email: user!.email },
+                ObjectUser,
+                "User"
+            );
+            return {
+                status: result.status,
+                message: result.message,
+                user: result.item,
+            };
+        }
+
+        //  Objetos(fields) -> Actualizar
+        let ObjectUser = {
+            name: user?.name,
+            lastname: user?.lastname,
+            password: UserDataBase.password,
+            email: user?.email,
+            role: user?.role,
+            createAT: UserDataBase.createAT,
+            birthDay: UserDataBase.birthDay
+        }
+        const result = await this.update(
+            this.collection,
+            { email: user!.email },
+            ObjectUser,
+            "User"
+        );
+        return {
+            status: result.status,
+            message: result.message,
+            user: result.item,
+        };
+    }
+
+
+
+
     // //    ->  Login de Usuario devuelve un token
     // async login() {
     //     const argumentos = this.getArgs().user;
@@ -210,65 +278,6 @@ class UserService extends ResolverOperationService {
     //     };
     // }
 
-    // //    ->  Permite Modificar al Usuario[Sus Propiedades]
-    // async modify() {
-    //     const user = this.getArgs().user;
-    //     const MongoID = new ObjectId(user?._id)
-    //     const search = await findOneElement(this.getDB(), this.collection, { _id: MongoID });
-    //     //  Comprobar id -> No venga Vacio / Undefine
-    //     if (!search) {
-    //         return {
-    //             status: false,
-    //             message: `El Field ID del Usuario Viene Vacio / undefine `,
-    //             user: null,
-    //         };
-    //     }
-    //     //  Quiere Actualizar la Contraseña -> Si viene Haga la siguiente Logica Si no que continue
-    //     if (user?.password) {
-    //         user!.password = bcrypt.hashSync(String(user?.password), 11);
-    //         let ObjectUser = {
-    //             name: user.name,
-    //             lastname: user.lastname,
-    //             password: user.password,
-    //             email: user.email,
-    //             role: user.role,
-    //             createAt: search.createAT,
-    //             birthDay: search.birthDay
-    //         }
-    //         const result = await this.update(
-    //             this.collection,
-    //             { _id: MongoID },
-    //             ObjectUser,
-    //             "User"
-    //         );
-    //         return {
-    //             status: result.status,
-    //             message: result.message,
-    //             user: result.item,
-    //         };
-    //     }
-    //     //  Objetos(fields) -> Actualizar
-    //     let ObjectUser = {
-    //         name: user?.name,
-    //         lastname: user?.lastname,
-    //         password: search.password,
-    //         email: user?.email,
-    //         role: user?.role,
-    //         createAt: search.createAT,
-    //         birthDay: search.birthDay
-    //     }
-    //     const result = await this.update(
-    //         this.collection,
-    //         { _id: MongoID },
-    //         ObjectUser,
-    //         "User"
-    //     );
-    //     return {
-    //         status: result.status,
-    //         message: result.message,
-    //         user: result.item,
-    //     };
-    // }
     // //    ->  Permite Borrar un Usuario
     // async erease() {
     //     const id = this.getArgs().id;
@@ -380,5 +389,7 @@ class UserService extends ResolverOperationService {
     // }
 
 }
+
+
 
 export default UserService;

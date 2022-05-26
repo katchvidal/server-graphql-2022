@@ -9,5 +9,6 @@ export interface IArgumentos {
   active?       : Boolean;
   user?         : IUser;
   pagination?   : IPagination;
+  email?        : string;
 
 }

@@ -2,7 +2,9 @@
 
 type Query {
 
+    user( email: String! ): ResultUser
     users( page: Int = 1, itemsPage: Int = 20 ): ResultUsers
     usersActive( page: Int = 1, itemsPage: Int = 20 ): ResultUsers
+    
 
 }
