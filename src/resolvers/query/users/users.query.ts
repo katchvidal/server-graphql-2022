@@ -5,9 +5,9 @@ import UserService from "../../../services/users/users.service";
 
 const resolverUserQuery: IResolvers = {
   Query: {
-    users(root, { page, itemsPage }, context ){
+    users(root, { page, itemsPage, active  }, context ){
         console.log( chalk.cyan( 'Backend Response: Get All Users' ))
-        return new UserService(root, { pagination: { page, itemsPage } }, context).items() 
+        return new UserService(root, { pagination: { page, itemsPage } }, context).items( active ) 
     },
 
     usersActive(root, args, context ){

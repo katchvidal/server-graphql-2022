@@ -6,8 +6,9 @@
   "author": "Ing katch vidal",
   "scripts": {
     "start": "node build/server.js",
-    "build": "tsc -p .",
-    "dev": "nodemon \"src/server.ts\" --exec \"ts-node\" \"src/server.ts\" -e ts,graphql,json"
+    "build": "tsc -p . && ncp src/schemas build/schemas",
+    "dev": "nodemon \"src/server.ts\" --exec \"ts-node\" \"src/server.ts\" -e ts,graphql,json",
+    "publish": "npm run build && npx vercel --prod "
   },
   "license": "MIT",
   "private": true,
@@ -50,10 +51,12 @@
     "@types/nodemailer": "^6.4.4",
     "nodemon": "^2.0.16",
     "ts-node": "^10.8.0",
-    "typescript-tslint-plugin": "^1.0.2"
+    "typescript-tslint-plugin": "^1.0.2",
+    "vercel": "^25.0.0"
   },
   "engines": {
-    "node": ">=14.0.0",
-    "yarn": ">=1.22.18"
+    "node": ">=16.*.*",
+    "yarn": ">=1.22.*",
+    "npm": ">=8.11.0*"
   }
 }

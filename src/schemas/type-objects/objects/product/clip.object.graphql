@@ -1,0 +1,14 @@
+
+type Clip {
+
+    clips: ClipQuality
+
+}
+
+type ClipQuality {
+
+    low: String!
+    medium: String!
+    full: String!
+
+}

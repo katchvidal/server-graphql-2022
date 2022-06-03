@@ -82,3 +82,18 @@ export const deleteOneElement = async (
 export const CountElement = async (database: Db, collection: string, filter: object = {}) => {
     return await database.collection(collection).countDocuments(filter);
 };
+
+export const randomItems = async (
+    database: Db,
+    collecion: string,
+    filter: object = {},
+    items: number = 10
+) : Promise<Array<object>> => {
+    return new Promise(async (resolve) => {
+        const pipeline = [
+            { $match: filter },
+            { $sample: { size: items } }
+        ];
+        resolve(await database.collection(collecion).aggregate(pipeline).toArray());
+    })
+}

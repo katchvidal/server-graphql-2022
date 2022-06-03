@@ -10,5 +10,7 @@ export interface IArgumentos {
   user?         : IUser;
   pagination?   : IPagination;
   email?        : string;
+  id?           : string | number;
+  platform?     : string;
 
 }

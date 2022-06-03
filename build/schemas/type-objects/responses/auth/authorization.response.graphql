@@ -1,0 +1,11 @@
+
+type ResultAuth implements Result {
+
+  # Status de la Operacion
+  status: Boolean!
+  # Feedback de la operacion
+  message: String!
+  # User
+  user: User
+  
+}

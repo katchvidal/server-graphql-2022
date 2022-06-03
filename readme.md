@@ -41,3 +41,12 @@
     -   Configuraciones
         -   enviroments.ts
 ```
+
+##  Solucionando Problemas con Type en Graphql
+```
+    cuando obtenemos un valor nulo cuando especifcamos que no queremos un valor nulo
+    para eso usaremos resolver de tipo esto pasa porque la propiedad que especificamos dentro de un tipo de objeto cambiando su nombre
+    eg: platform_id -> cambio a platformId 
+    para ello usaremos el resolver de tipo
+    
+```

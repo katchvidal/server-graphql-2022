@@ -1,0 +1,10 @@
+type ResultSignUpUser implements Result {
+
+    #   Status request
+    status: Boolean!
+    #   Feedback of an operation
+    message: String!
+    #   Return a User
+    user: User
+    
+}

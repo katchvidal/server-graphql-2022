@@ -1,6 +1,6 @@
 import { findOneElement } from "../../lib/database.operations";
 import { IArgumentos } from "../../interfaces/resolver/arguments.interface";
-import { COLLECTIONS, EXPIRETIME, MESSAGES } from "../../configs/constants";
+import { ACTIVE_FILTER, COLLECTIONS, EXPIRETIME, MESSAGES } from "../../configs/constants";
 import { IContextData } from "../../interfaces/resolver/context.interface";
 import ResolverOperationService from "../resolver.service";
 //import JWT from "../lib/jsonwebtoken";
@@ -74,16 +74,18 @@ class UserService extends ResolverOperationService {
     }
 
     //    TODO:->  Permite obtener la collecion de Usuarios Completa
-    async items() {
+    async items(active: string = ACTIVE_FILTER.ACTIVE) {
+        let filter: object = { active: { $ne: false } }
+        if (active === ACTIVE_FILTER.ALL) {
+            filter = {}
+        }else if(active === ACTIVE_FILTER.INACTIVE) {
+            filter = { active: false  }
+        }
+
         const page = this.argumentos.pagination?.page;
         const itemsPage = this.argumentos.pagination?.itemsPage;
 
-        const result = await this.list(
-            this.collection,
-            "Users",
-            page,
-            itemsPage
-        );
+        const result = await this.list(this.collection, 'Usuarios', page, itemsPage, filter );
         return {
             info: result.info,
             status: result.status,
@@ -143,8 +145,8 @@ class UserService extends ResolverOperationService {
     async modify() {
         const user = this.argumentos.user;
 
-        const checkString = await this.checkData(String( user!.email ))
-        if(!checkString){
+        const checkString = await this.checkData(String(user!.email))
+        if (!checkString) {
             return {
                 status: false,
                 message: `El Field Email del Usuario Viene Vacio / undefine`,
@@ -153,7 +155,7 @@ class UserService extends ResolverOperationService {
         }
         //  Comprobar email -> No venga Vacio / Undefine
         //const search = await findOneElement(this.getDB(), this.collection, { email: user!.email });
-        const UserDataBase = await this.ExistInDatabasebyEmail( user!.email )
+        const UserDataBase = await this.ExistInDatabasebyEmail(user!.email)
         if (!UserDataBase) {
             return {
                 status: false,
@@ -209,8 +211,6 @@ class UserService extends ResolverOperationService {
             user: result.item,
         };
     }
-
-
 
 
     // //    ->  Login de Usuario devuelve un token

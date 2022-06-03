@@ -40,14 +40,16 @@ class ResolverOperationService {
     collection: string,
     listElement: string,
     page: number = 1,
-    itemsPage: number = 20
+    itemsPage: number = 20,
+    filter: object = { active : { $ne : false }}
   ) {
     try {
       const PaginationData = await pagination(
         this.getDB(),
         collection,
         page, 
-        itemsPage 
+        itemsPage ,
+        filter
       );
 
       return {
@@ -60,7 +62,7 @@ class ResolverOperationService {
         },
         status: true,
         message: `Backend Response: List ${listElement} Charged Succesfull `,
-        items: await findElement(this.getDB(), collection, {}, PaginationData),
+        items: await findElement(this.getDB(), collection, filter , PaginationData),
       };
     } catch (error) {
       return {
@@ -131,24 +133,24 @@ class ResolverOperationService {
     }
   }
 
-  //  TODO: Obtener detalle del Item -> Un solo elemento by MongoID
-//   protected async getbyMongoID(collection: string, element: string) {
-//     try {
-//       return {
-//         status: true,
-//         message: `Backend: Response: ${element} ${this.args.id} Seleccionado -> Informacion a Continuacion`,
-//         item: await findOneElement(this.getDB(), collection, {
-//           _id: new ObjectId(this.getArgs().id )
-//         }),
-//       };
-//     } catch (error) {
-//       return {
-//         status: false,
-//         message: `Backend: Response: No se pudo realizar la operacion anterior en la busqueda del ${element} ${this.args.id}`,
-//         item: null,
-//       };
-//     }
-//   }
+   //TODO: Obtener detalle del Item -> Un solo elemento by ID
+  protected async getbyID(collection: string, element: string) {
+    try {
+      return {
+        status: true,
+        message: `Backend: Response: ${element} ${this.args.id} Seleccionado -> Informacion a Continuacion`,
+        item: await findOneElement(this.getDB(), collection, {
+          id: this.getArgs().id
+        }),
+      };
+    } catch (error) {
+      return {
+        status: false,
+        message: `Backend: Response: No se pudo realizar la operacion anterior en la busqueda del ${element} ${this.args.id}`,
+        item: null,
+      };
+    }
+  }
 
   //  TODO: Añadir Item -> Agregar un Solo Elemento
   protected async add(collection: string, document: object, item: string) {
