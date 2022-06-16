@@ -1,9 +1,0 @@
-#   Pagination query always recived a page: Int & itemsPage: Int
-
-type Query {
-
-    user( email: String! ): ResultUser
-    users( page: Int = 1, itemsPage: Int = 20, active: ActiveEnumFilter = ACTIVE ): ResultUsers
-    usersActive( page: Int = 1, itemsPage: Int = 20 ): ResultUsers
-    
-}

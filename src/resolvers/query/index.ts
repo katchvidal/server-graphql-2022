@@ -1,12 +1,20 @@
+// const GMR = require('@wiicamp/graphql-merge-resolvers');
 import GMR from "graphql-merge-resolvers";
-import resolverAuthQuery from "./auth/auth.query";
-import resolverUserQuery from "./users/users.query";
-
-
+import resolversUserQuery from './user';
+import resolversShopProductsQuery from './shop-product';
+import resolversGenreQuery from './genre';
+import resolversTagQuery from './tag';
+import queryStripeResolvers from './stripe';
+import resolversDashboardQuery from './dashboard';
 
 const queryResolvers = GMR.merge([
-    resolverUserQuery,
-    resolverAuthQuery,
+    resolversUserQuery,
+    resolversShopProductsQuery,
+    resolversGenreQuery,
+    resolversTagQuery,
+    // Stripe
+    // queryStripeResolvers,
+    resolversDashboardQuery
 ]);
 
 export default queryResolvers;

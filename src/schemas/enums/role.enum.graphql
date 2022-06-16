@@ -1,6 +1,0 @@
-
-#Enum para Rol de Usuario -> Choices
-enum Role {
-    CLIENT 
-    ADMIN
-}

@@ -1,7 +1,0 @@
-
-type Mutation {
-
-  # Mutation Examples
-    example:String
-
-}

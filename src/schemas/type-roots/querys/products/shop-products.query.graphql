@@ -1,6 +1,0 @@
-
-type Query {
-    #   Lista de Productos de la tienda
-    shopProducts(page: Int = 1, itemsPage: Int = 20, active: ActiveEnumFilter = ACTIVE,  random: Boolean = false ): ResultShopProduct
-    shopProductsPlatforms(page: Int = 1, itemsPage: Int = 20, active: ActiveEnumFilter = ACTIVE ,platform: ID!, random: Boolean = false ): ResultShopProduct
-}

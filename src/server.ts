@@ -1,12 +1,12 @@
-import { ApolloServer } from "apollo-server-express";
+import { ApolloServer } from 'apollo-server-express';
 import express from "express";
 import compression from "compression";
 import cors from "cors";
-import enviroments from "./configs/enviroments";
+import enviroments from "./config/environments";
 import schema from './schemas'
 import chalk from "chalk";
-import { IContextServer } from "./interfaces/context/server.context";
-import { connectToDatabase } from "./lib/database.config";
+import { IContext } from "./interfaces/context.interface";
+import { connectToDatabase } from "./lib/database";
 
 //  TODO: CHECK ENVIROMENT 
 if (process.env.NODE_ENV !== "production") {
@@ -22,7 +22,7 @@ async function main() {
 
   const db = await connectToDatabase()
 
-  const context = async ({ req, connection }: IContextServer) => {
+  const context = async ({ req, connection }: IContext) => {
     // console.log( req.headers.authorization );
     const token = (req) ? req.headers.authorization : connection.authorization
 
