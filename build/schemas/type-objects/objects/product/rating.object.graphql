@@ -1,7 +1,0 @@
-
-type Rating {
-
-    value: Float!
-    count: Int
-
-}

@@ -1,7 +1,0 @@
-
-type Query {
-
-    SignIn( email: String!, password: String!): ResultLogin
-    Auth: ResultAuth
-
-}

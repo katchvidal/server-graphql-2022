@@ -1,9 +1,0 @@
-
-interface Result {
-
-    #   Status request
-    status: Boolean!
-    #   Feedback request
-    message: String!
-
-}
