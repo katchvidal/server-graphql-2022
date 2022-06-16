@@ -23,6 +23,7 @@ async function main() {
   const db = await connectToDatabase()
 
   const context = async ({ req, connection }: IContextServer) => {
+    // console.log( req.headers.authorization );
     const token = (req) ? req.headers.authorization : connection.authorization
 
     return { db, token };
